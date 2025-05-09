@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: exiled-game-stealer
+    env: node
+    buildCommand: npm install
+    startCommand: npm start
+    port: 3000
+    envVars:
+      - key: NODE_ENV
+        value: production
+    healthCheckPath: /
+    autoDeploy: true
+    plan: free
